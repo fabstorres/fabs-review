@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fabs-review", "fabs-review.csproj", "{B44B27F7-A3BD-12E6-AE8D-A9546FC3E04F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B44B27F7-A3BD-12E6-AE8D-A9546FC3E04F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B44B27F7-A3BD-12E6-AE8D-A9546FC3E04F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B44B27F7-A3BD-12E6-AE8D-A9546FC3E04F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B44B27F7-A3BD-12E6-AE8D-A9546FC3E04F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B77FDCF4-E4FD-4869-ACA2-0DD500C945C3}
+	EndGlobalSection
+EndGlobal
