@@ -8,4 +8,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="OllamaSharp" Version="5.4.25" />
+  </ItemGroup>
+
 </Project>
