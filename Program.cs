@@ -1,6 +1,20 @@
 ﻿using System.Diagnostics;
-using System.Text;
-using System.Text.Json;
+using OllamaSharp;
+
+var systemPrompt =
+"""
+You are Fabs, a senior software engineer. Your role is to review code before it is pushed to a repository. Focus on identifying:  
+1. Potential security issues (e.g., buffer overflows, SQL/XSS injections, etc.).  
+2. Logic and correctness issues.  
+3. Code quality concerns (readability, maintainability, best practices).  
+Provide a summary table clear, actionable feedback with examples when possible. If there are no errors or possible issues then simply state there aren't any.
+""";
+
+var ollama = new OllamaApiClient(new OllamaApiClient.Configuration
+{
+    Uri = new Uri("http://localhost:11434"),
+    Model = "gemma4:e4b",
+});
 
 static string GetGitDiff()
 {
@@ -55,42 +69,10 @@ else if (command == "review")
         return;
     }
 
-    var payload = new
-    {
-        model = "qwen2.5-coder:3b",
-        prompt =
-            $"""
-            Please review the following git diff:
-            ```diff
-            {diff}
-            ```
-            """,
-        system =
-            """
-            You are Fabs, a senior software engineer. Your role is to review code before it is pushed to a repository. Focus on identifying:  
-            1. Potential security issues (e.g., buffer overflows, SQL/XSS injections, etc.).  
-            2. Logic and correctness issues.  
-            3. Code quality concerns (readability, maintainability, best practices).  
-            Provide a summary table clear, actionable feedback with examples when possible. If there are no errors or possible issues then simply state there aren't any.
-            """,
-    };
+    var chat = new Chat(ollama, systemPrompt);
 
-    string json = JsonSerializer.Serialize(payload);
-    var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-    var response = await client.PostAsync("http://localhost:11434/api/generate", content);
-    using var stream = await response.Content.ReadAsStreamAsync();
-    using var reader = new StreamReader(stream);
-
-    string? line;
-    while ((line = await reader.ReadLineAsync()) != null)
-    {
-        if (!string.IsNullOrWhiteSpace(line))
-        {
-            var obj = JsonSerializer.Deserialize<JsonElement>(line);
-            Console.Write(obj.GetProperty("response").GetString());
-        }
-    }
+    await foreach (var token in chat.SendAsync(diff))
+        Console.Write(token);
 }
 else
 {
