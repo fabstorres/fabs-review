@@ -1,6 +1,6 @@
 using OllamaSharp;
 
-namespace fabs_review;
+namespace FabsReview;
 
 /// <summary>
 /// A Toolkit for the model to able to code review
