@@ -43,7 +43,35 @@ static string GetGitDiff()
     return string.Empty;
 }
 
-using HttpClient client = new HttpClient();
+static IEnumerable<string> GetProjectFiles(string workingDirectory)
+{
+    // Check if this is actually a git repo first
+    if (!Directory.Exists(Path.Combine(workingDirectory, ".git")))
+    {
+        // Fall back to all files if not a git repo
+        return Directory.EnumerateFiles(workingDirectory, "*", SearchOption.AllDirectories);
+    }
+    var psi = new ProcessStartInfo("git", "ls-files --cached --others --exclude-standard -z")
+    {
+        WorkingDirectory = workingDirectory,
+        RedirectStandardOutput = true,
+        RedirectStandardError = true,
+        UseShellExecute = false,
+        CreateNoWindow = true
+    };
+    using var process = Process.Start(psi);
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+    using var reader = process.StandardOutput;
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+
+    // -z flag uses null terminator for paths with spaces/newlines
+    var output = reader.ReadToEnd();
+    process.WaitForExit();
+    return output.Split('\0', StringSplitOptions.RemoveEmptyEntries)
+        .Select(file => Path.Combine(workingDirectory, file))
+        .Where(File.Exists); // Safety check
+}
+
 
 var command = args.ElementAtOrDefault(0);
 
@@ -57,7 +85,16 @@ if (string.IsNullOrWhiteSpace(command))
 }
 else if (command == "init")
 {
-    Console.WriteLine("TODO: implement init command");
+    Console.WriteLine("This process may take some time");
+    var files = GetProjectFiles(Directory.GetCurrentDirectory()).ToList();
+    var contents = files.Select(File.ReadAllText).ToList();
+
+    var chat = new Chat(ollama, "You will analyze the file contents and create a project overview and dependency map. Your output will be regarded as a text file so do not make commentary or suggesstions. Treat your output as documentation.");
+
+    await foreach (var token in chat.SendAsync(string.Join("\n", contents)))
+    {
+        Console.Write(token);
+    }
 }
 else if (command == "review")
 {
