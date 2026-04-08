@@ -13,7 +13,7 @@ Provide a summary table clear, actionable feedback with examples when possible. 
 var ollama = new OllamaApiClient(new OllamaApiClient.Configuration
 {
     Uri = new Uri("http://localhost:11434"),
-    Model = "gemma4:e4b",
+    Model = "qwen2.5-coder:3b",
 });
 
 static string GetGitDiff()
