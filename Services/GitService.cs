@@ -13,7 +13,26 @@ internal sealed class GitService
             throw new NotSupportedException($"[GitServices] failed to detect an existing repository in: {workingDirectory}");
         }
     }
-    private async Task<string> RunGit(string[] args)
+
+
+    /// <summary>
+    /// Returns project file paths: from git when inside a repo, otherwise all files under the directory.
+    /// </summary>
+    public async Task<IEnumerable<string>> GetProjectFilesAsync()
+    {
+        var output = await RunGitAsync(["ls-files", "--cached", "--others", "--exclude-standard", "-z"]);
+
+        // -z flag uses null terminator for paths with spaces/newlines
+        return output.Split('\0', StringSplitOptions.RemoveEmptyEntries)
+            .Select(file => Path.Combine(_workingDirectory, file))
+            .Where(File.Exists); // Safety check
+    }
+
+    public async Task<string> GetRawDiffAsync()
+    {
+        return await RunGitAsync(["diff"]);
+    }
+    private async Task<string> RunGitAsync(string[] args)
     {
         var psi = new ProcessStartInfo("git")
         {
