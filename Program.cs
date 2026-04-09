@@ -2,7 +2,8 @@
 using FabsReview.Command;
 using OllamaSharp;
 
-var git = new GitService(Directory.GetCurrentDirectory());
+var workingDirectory = Directory.GetCurrentDirectory();
+var git = new GitService(workingDirectory);
 
 var ollama = new OllamaApiClient(new OllamaApiClient.Configuration
 {
@@ -22,7 +23,7 @@ if (string.IsNullOrWhiteSpace(command))
 }
 else if (command == "init")
 {
-    await InitCommand.RunAsync(git, ollama);
+    await InitCommand.RunAsync(git, ollama, workingDirectory);
 }
 else if (command == "review")
 {

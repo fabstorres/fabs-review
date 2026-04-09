@@ -8,7 +8,7 @@ This tools assumes that the project repo already contains a `.git` file.
 ## Usage
 
 ### Commands
-- init: (currently in development)
+- init: creates a project summary for more context in review
 - review: reviews uncomitted changes and provides a summary of changes and potential errors
 ## License
 
