@@ -1,9 +1,15 @@
-Fabs Review
+# Fabs Review
+> Local AI code review tool, so you can ensure your code stays on your device
 
-> I’ve been interested in building tools that cost nothing to run beyond electricity.
-> Fabs Review is an early prototype of a CLI tool that lets me call a local model to review my code.
-> The long-term goal is to expand this into a tool that can understand a repository, generate documentation, and provide meaningful context about the codebase.
+## Introduction
+Before installation ensure that Git and Ollama is preinstalled and actively running on port `11434`
+At this current momement this program assumes you have Qwen 2.5 Coder, 3B model.
+This tools assumes that the project repo already contains a `.git` file.
+## Usage
 
+### Commands
+- init: (currently in development)
+- review: reviews uncomitted changes and provides a summary of changes and potential errors
 ## License
 
 [MIT](LICENSE)
