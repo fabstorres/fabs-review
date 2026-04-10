@@ -27,7 +27,7 @@ else if (command == "init")
 }
 else if (command == "review")
 {
-    await ReviewCommand.RunAsync(git, ollama);
+    await ReviewCommand.RunAsync(git, ollama, workingDirectory);
 }
 else
 {

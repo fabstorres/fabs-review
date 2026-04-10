@@ -10,6 +10,10 @@ This tools assumes that the project repo already contains a `.git` file.
 ### Commands
 - init: creates a project summary for more context in review
 - review: reviews uncomitted changes and provides a summary of changes and potential errors
+
+- if `.fabs/context.md` exists, `review` includes it alongside the current `git diff`
+- after the review completes, `.fabs/context.md` is refreshed from the current diff so the context stays up to date
+
 ## License
 
 [MIT](LICENSE)
